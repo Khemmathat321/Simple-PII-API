@@ -12,22 +12,22 @@ public class UserRepository : IUserRepository
         _context = context;
     }
 
-    public void Create(User user)
+    public async Task Create(User user)
     {
-        _context.User.InsertOne(user);
+        await _context.User.InsertOneAsync(user);
     }
 
-    public IEnumerable<User> GetUsers()
-    {
-        throw new NotImplementedException();
-    }
-
-    public User GetUser()
+    public Task<IEnumerable<User>> GetUsers()
     {
         throw new NotImplementedException();
     }
 
-    public User Update()
+    public Task<User> GetUser()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task Update()
     {
         throw new NotImplementedException();
     }

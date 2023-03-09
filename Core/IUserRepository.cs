@@ -4,8 +4,8 @@ namespace Core;
 
 public interface IUserRepository
 {
-    public void Create(User user);
-    public IEnumerable<User> GetUsers();
-    public User GetUser();
-    public User Update();
+    public Task Create(User user);
+    public Task<IEnumerable<User>> GetUsers();
+    public Task<User> GetUser();
+    public Task Update();
 }

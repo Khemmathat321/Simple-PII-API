@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Core.Entities;
 using FluentAssertions;
 using Infrastructure.DataAccess;
@@ -28,7 +29,7 @@ public class UserRepositoryTest
         }
 
         [Fact]
-        public void It_Success_When_UserDataValid()
+        public async Task It_Success_When_UserDataValid()
         {
             // Arrange
             var user = new User()
@@ -39,7 +40,7 @@ public class UserRepositoryTest
             };
 
             // Act
-            var exception = Record.Exception(() => _repo.Create(user));
+            var exception = await Record.ExceptionAsync(async () => await _repo.Create(user));
 
             // Assert
             exception.Should().BeNull();
