@@ -4,7 +4,7 @@ namespace Core;
 
 public interface IUserRepository
 {
-    public User Create();
+    public void Create(User user);
     public IEnumerable<User> GetUsers();
     public User GetUser();
     public User Update();
