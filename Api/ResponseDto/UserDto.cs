@@ -13,7 +13,7 @@ public class UserDto
         Address = user.Address;
     }
 
-    public string Id { get; }
+    public Guid Id { get; }
     public string Name { get; }
     public string? Email { get; }
     public string? Address { get; }

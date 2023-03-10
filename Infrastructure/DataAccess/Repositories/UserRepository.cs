@@ -31,7 +31,7 @@ public class UserRepository : IUserRepository
         throw new NotImplementedException();
     }
 
-    public async Task<User> GetUser(string id)
+    public async Task<User> GetUser(Guid id)
     {
         var user = await _context.User.Where(q => q.Id == id).Select(q => q).SingleOrDefaultAsync().ConfigureAwait(false);
 

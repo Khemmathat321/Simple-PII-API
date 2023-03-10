@@ -23,7 +23,7 @@ public class UserController : Controller
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> Get([FromRoute] Guid id)
     {
-        var user = await _userRepository.GetUser(id.ToString());
+        var user = await _userRepository.GetUser(id);
 
         return await Task.FromResult<IActionResult>(Ok(new UserDto(user)));
     }
@@ -34,7 +34,7 @@ public class UserController : Controller
     [HttpPost("")]
     public async Task<IActionResult> Create([FromBody] UserCreateBody userCreateBody)
     {
-        var user = new User(new Guid().ToString(), userCreateBody.Name, userCreateBody.Email, userCreateBody.PhoneNumber, userCreateBody.Address);
+        var user = new User(new Guid(), userCreateBody.Name, userCreateBody.Email, userCreateBody.PhoneNumber, userCreateBody.Address);
         await _userRepository.Create(user);
 
         return await Task.FromResult<IActionResult>(Ok(new UserDto(user)));
@@ -46,7 +46,7 @@ public class UserController : Controller
     [HttpPut("{id:guid}")]
     public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UserCreateBody userCreateBody)
     {
-        var user = new User(id.ToString(), userCreateBody.Name, userCreateBody.Email, userCreateBody.PhoneNumber, userCreateBody.Address);
+        var user = new User(id, userCreateBody.Name, userCreateBody.Email, userCreateBody.PhoneNumber, userCreateBody.Address);
         await _userRepository.Create(user);
 
         return await Task.FromResult<IActionResult>(Ok(new UserDto(user)));

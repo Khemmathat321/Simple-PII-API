@@ -24,7 +24,7 @@ public class UserRepositoryTest
         public async Task It_ReturnUser_When_UserDataValid()
         {
             // Arrange
-            var user = new User(Guid.NewGuid().ToString(), "Some Name", "some@mail.com", "0987654321", "address fake");
+            var user = new User(Guid.NewGuid(), "Some Name", "some@mail.com", "0987654321", "address fake");
 
             // Act
             var actual = await _repo.Create(user);
