@@ -57,6 +57,8 @@ msbuild.wrn
 # Visual Studio 2015
 .vs/
 
+# Net Core
+appsettings.*
 
 # Dotfiles
 .env
