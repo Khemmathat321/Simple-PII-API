@@ -1,11 +1,8 @@
 using System;
 using System.Threading.Tasks;
+using Core;
 using Domain.Entities;
 using FluentAssertions;
-using Infrastructure.DataAccess;
-using Infrastructure.DataAccess.Configurations;
-using Infrastructure.DataAccess.Repositories;
-using Microsoft.Extensions.Options;
 using Xunit;
 
 namespace Test.Integrations;
@@ -14,18 +11,10 @@ public class UserRepositoryTest
 {
     public class Create
     {
-        private readonly UserRepository _repo;
+        private readonly IUserRepository _repo;
 
         public Create()
         {
-            MongoConfiguration appSettings = new MongoConfiguration()
-            {
-                ConnectionString = "mongodb://root:example@localhost:27019/",
-                DatabaseName = "PII"
-            };
-            IOptions<MongoConfiguration> options = Options.Create(appSettings);
-            var dbContext = new MongoDbContext(options);
-            _repo = new UserRepository(dbContext);
         }
 
         [Fact]
