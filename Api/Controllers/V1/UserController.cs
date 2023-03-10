@@ -35,9 +35,9 @@ public class UserController : Controller
     public async Task<IActionResult> Create([FromBody] UserCreateBody userCreateBody)
     {
         var user = new User(new Guid(), userCreateBody.Name, userCreateBody.Email, userCreateBody.PhoneNumber, userCreateBody.Address);
-        await _userRepository.Create(user);
+        var userCreated = await _userRepository.Create(user);
 
-        return await Task.FromResult<IActionResult>(Ok(new UserDto(user)));
+        return await Task.FromResult<IActionResult>(Ok(new UserDto(userCreated)));
     }
 
     /// <summary>
@@ -47,8 +47,8 @@ public class UserController : Controller
     public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UserCreateBody userCreateBody)
     {
         var user = new User(id, userCreateBody.Name, userCreateBody.Email, userCreateBody.PhoneNumber, userCreateBody.Address);
-        await _userRepository.Create(user);
+        var userUpdated = await _userRepository.Create(user);
 
-        return await Task.FromResult<IActionResult>(Ok(new UserDto(user)));
+        return await Task.FromResult<IActionResult>(Ok(new UserDto(userUpdated)));
     }
 }
