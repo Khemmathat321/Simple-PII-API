@@ -1,4 +1,4 @@
-using Core.Entities;
+using Domain.Entities;
 using Infrastructure.DataAccess.Configurations;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson.Serialization;

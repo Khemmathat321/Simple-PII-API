@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using Core.Entities;
+using Domain.Entities;
 using FluentAssertions;
 using Infrastructure.DataAccess;
 using Infrastructure.DataAccess.Configurations;

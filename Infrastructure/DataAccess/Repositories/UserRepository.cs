@@ -1,5 +1,5 @@
 using Core;
-using Core.Entities;
+using Domain.Entities;
 
 namespace Infrastructure.DataAccess.Repositories;
 
