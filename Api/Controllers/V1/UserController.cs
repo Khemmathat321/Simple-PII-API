@@ -1,3 +1,4 @@
+using Api.Requests;
 using Api.ResponseDto;
 using Core;
 using Domain.Entities;
@@ -23,6 +24,30 @@ public class UserController : Controller
     public async Task<IActionResult> Get([FromRoute] Guid id)
     {
         var user = await _userRepository.GetUser(id.ToString());
+
+        return await Task.FromResult<IActionResult>(Ok(new UserDto(user)));
+    }
+
+    /// <summary>
+    ///    Endpoint for create user
+    /// </summary>
+    [HttpPost("")]
+    public async Task<IActionResult> Create([FromBody] UserCreateBody userCreateBody)
+    {
+        var user = new User(new Guid().ToString(), userCreateBody.Name, userCreateBody.Email, userCreateBody.PhoneNumber, userCreateBody.Address);
+        await _userRepository.Create(user);
+
+        return await Task.FromResult<IActionResult>(Ok(new UserDto(user)));
+    }
+
+    /// <summary>
+    ///    Endpoint for update user
+    /// </summary>
+    [HttpPut("{id:guid}")]
+    public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UserCreateBody userCreateBody)
+    {
+        var user = new User(id.ToString(), userCreateBody.Name, userCreateBody.Email, userCreateBody.PhoneNumber, userCreateBody.Address);
+        await _userRepository.Create(user);
 
         return await Task.FromResult<IActionResult>(Ok(new UserDto(user)));
     }
