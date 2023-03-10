@@ -1,4 +1,5 @@
 using System;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using Domain.Entities;
 using FluentAssertions;
@@ -24,7 +25,7 @@ public class UserRepositoryTest
         public async Task It_ReturnUser_When_UserDataValid()
         {
             // Arrange
-            var user = new User(Guid.NewGuid(), "Some Name", "some@mail.com", "0987654321", "address fake");
+            var user = new User(Guid.NewGuid(), "Some Name", new MailAddress("some@mail.com"), "aaaaaa", "address fake");
 
             // Act
             var actual = await _repo.Create(user);

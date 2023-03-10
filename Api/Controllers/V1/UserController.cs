@@ -1,3 +1,4 @@
+using System.Net.Mail;
 using Api.Requests;
 using Api.ResponseDto;
 using Core;
@@ -34,7 +35,7 @@ public class UserController : Controller
     [HttpPost("")]
     public async Task<IActionResult> Create([FromBody] UserCreateBody userCreateBody)
     {
-        var user = new User(new Guid(), userCreateBody.Name, userCreateBody.Email, userCreateBody.PhoneNumber, userCreateBody.Address);
+        var user = new User(new Guid(), userCreateBody.Name, new MailAddress(userCreateBody.Email), userCreateBody.PhoneNumber, userCreateBody.Address);
         var userCreated = await _userRepository.Create(user);
 
         return await Task.FromResult<IActionResult>(Ok(new UserDto(userCreated)));
@@ -44,9 +45,9 @@ public class UserController : Controller
     ///    Endpoint for update user
     /// </summary>
     [HttpPut("{id:guid}")]
-    public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UserCreateBody userCreateBody)
+    public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UserUpdateBody userUpdateBody)
     {
-        var user = new User(id, userCreateBody.Name, userCreateBody.Email, userCreateBody.PhoneNumber, userCreateBody.Address);
+        var user = new User(id, userUpdateBody.Name, new MailAddress(userUpdateBody.Email), userUpdateBody.PhoneNumber, userUpdateBody.Address);
         var userUpdated = await _userRepository.Create(user);
 
         return await Task.FromResult<IActionResult>(Ok(new UserDto(userUpdated)));

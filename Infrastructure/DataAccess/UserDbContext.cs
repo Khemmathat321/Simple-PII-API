@@ -1,3 +1,4 @@
+using System.Net.Mail;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,5 +28,8 @@ public class UserDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<User>().ToTable("users");
+        modelBuilder.Entity<User>()
+            .Property(b => b.Email)
+            .HasConversion(v => v.Address, v => new MailAddress(v)).IsRequired();
     }
 }
