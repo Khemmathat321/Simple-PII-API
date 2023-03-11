@@ -1,6 +1,6 @@
 using Domain.Entities;
 
-namespace Core;
+namespace Domain;
 
 public interface IUserRepository
 {

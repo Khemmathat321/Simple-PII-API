@@ -1,7 +1,7 @@
 using System.Net.Mail;
 using Api.Requests;
 using Api.ResponseDto;
-using Core;
+using Domain;
 using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 

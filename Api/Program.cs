@@ -1,4 +1,4 @@
-using Core;
+using Domain;
 using Infrastructure.DataAccess;
 using Infrastructure.DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
