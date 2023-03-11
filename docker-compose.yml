@@ -5,26 +5,47 @@ services:
     build:
       context: ./
       dockerfile: ./Api/Dockerfile
-    container_name: api.service
+    container_name: pii-api.service
     restart: always
     ports:
-      - 8080:80
+      - 8888:80
+    env_file:
+      - .env
     depends_on:
       - mysql
     networks:
       backend:
         aliases:
-          - webapi
+          - api
+
+  migration:
+    build:
+      context: ./
+      dockerfile: ./Migration/Dockerfile
+    container_name: pii-migration.service
+    restart: always
+    env_file:
+      - .env
+    depends_on:
+      - mysql
+    networks:
+      backend:
+        aliases:
+          - migration
 
   mysql:
     image: mysql
-    container_name: mysql.db
+    container_name: pii-mysql.service
     restart: always
     ports:
       - 3308:3306
     environment:
       MYSQL_DATABASE: pii
       MYSQL_ROOT_PASSWORD: root
+    networks:
+      backend:
+        aliases:
+          - database
 
 networks:
   backend:

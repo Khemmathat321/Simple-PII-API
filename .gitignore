@@ -58,7 +58,7 @@ msbuild.wrn
 .vs/
 
 # Net Core
-appsettings.*
+appsettings.*.json
 
 # Dotfiles
 .env
