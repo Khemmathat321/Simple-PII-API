@@ -24,7 +24,7 @@ public class UserCrudUseCase : IUserCrudUseCase
         return await _userRepository.Create(user);
     }
 
-    public async Task<User> Update(Guid id, string name, string email, string? phoneNumber, string? address)
+    public async Task<User?> Update(Guid id, string name, string email, string? phoneNumber, string? address)
     {
         var users = await _userRepository.GetUsers(new MailAddress(email));
         if (users.Any(q => q.Id != id)) throw new Exception("This email already exist");
@@ -33,7 +33,7 @@ public class UserCrudUseCase : IUserCrudUseCase
         return await _userRepository.Update(user);
     }
 
-    public async Task<User> GetUser(Guid id)
+    public async Task<User?> GetUser(Guid id)
     {
         return await _userRepository.GetUser(id);
     }

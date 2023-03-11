@@ -24,6 +24,8 @@ public class UserController : Controller
     {
         var user = await _userCrudUseCase.GetUser(id);
 
+        if (user == null) return await Task.FromResult<IActionResult>(NotFound());
+
         return await Task.FromResult<IActionResult>(Ok(new UserDto(user)));
     }
 
@@ -45,6 +47,7 @@ public class UserController : Controller
     public async Task<IActionResult> Update(Guid id, [FromBody] UserBody userBody)
     {
         var userUpdated = await _userCrudUseCase.Update(id, userBody.Name, userBody.Email, userBody.PhoneNumber, userBody.Address);
+        if (userUpdated == null) return await Task.FromResult<IActionResult>(NotFound());
 
         return await Task.FromResult<IActionResult>(Ok(new UserDto(userUpdated)));
     }

@@ -22,9 +22,11 @@ public class UserRepository : IUserRepository
         return result.Entity;
     }
 
-    public async Task<User> Update(User user)
+    public async Task<User?> Update(User user)
     {
-        var record = await _context.User.Where(q => q.Id == user.Id).Select(q => q).SingleAsync();
+        var record = await _context.User.Where(q => q.Id == user.Id).Select(q => q).SingleOrDefaultAsync();
+        if (record == null) return null;
+
         record.Email = user.Email;
         record.Name = user.Name;
         record.PhoneNumber = user.PhoneNumber;
@@ -44,8 +46,8 @@ public class UserRepository : IUserRepository
         return await _context.User.Where(q => q.Email == mailAddress).Select(q => q).ToListAsync();
     }
 
-    public async Task<User> GetUser(Guid id)
+    public async Task<User?> GetUser(Guid id)
     {
-        return await _context.User.Where(q => q.Id == id).Select(q => q).SingleAsync();
+        return await _context.User.Where(q => q.Id == id).Select(q => q).SingleOrDefaultAsync();
     }
 }
