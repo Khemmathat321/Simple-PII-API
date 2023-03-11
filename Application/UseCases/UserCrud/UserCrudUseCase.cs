@@ -37,4 +37,9 @@ public class UserCrudUseCase : IUserCrudUseCase
     {
         return await _userRepository.GetUser(id);
     }
+
+    public Task<bool> Delete(Guid id)
+    {
+        throw new NotImplementedException();
+    }
 }
