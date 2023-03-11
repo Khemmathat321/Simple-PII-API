@@ -72,7 +72,7 @@ public class UserControllerTest
     }
 
     [Fact]
-    public async Task CreateUser_Return_BadData_When_EmailAlreadyExist()
+    public async Task Create_Return_BadData_When_EmailAlreadyExist()
     {
         // Arrange
         var requestBody = new UserBody("name", "some@mail.com", "0987654321", "some address");
@@ -92,7 +92,7 @@ public class UserControllerTest
     }
 
     [Fact]
-    public async Task CreateUser_Return_Ok()
+    public async Task Create_Return_Ok()
     {
         // Arrange
         var requestBody = new UserBody("name", "some@mail.com", "0987654321", "some address");
@@ -112,7 +112,7 @@ public class UserControllerTest
     }
 
     [Fact]
-    public async Task CreateUser_Return_UserDto()
+    public async Task Create_Return_UserDto()
     {
         // Arrange
         var requestBody = new UserBody("name", "some@mail.com", "0987654321", "some address");
@@ -126,6 +126,93 @@ public class UserControllerTest
 
         // Act
         var actual = (OkObjectResult) await _controller.Create(requestBody);
+
+        // Assert
+        actual.Value.Should().BeOfType<UserDto>();
+    }
+
+    [Fact]
+    public async Task Update_Return_Ok()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
+        var requestBody = new UserBody("name", "some@mail.com", "0987654321", "some address");
+        var user = _factory.NewUser("name", "some@mail.com", "0987654321", "some address");
+        _useCase.Setup(r => r.Update(
+            It.IsAny<Guid>(),
+            It.IsAny<string>(),
+            It.IsAny<string>(),
+            It.IsAny<string>(),
+            It.IsAny<string>())
+        ).ReturnsAsync(user);
+
+        // Act
+        var actual = await _controller.Update(id, requestBody);
+
+        // Assert
+        actual.Should().BeOfType<OkObjectResult>();
+    }
+
+    [Fact]
+    public async Task Update_Return_NotFound()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
+        var requestBody = new UserBody("name", "some@mail.com", "0987654321", "some address");
+        var user = _factory.NewUser("name", "some@mail.com", "0987654321", "some address");
+        _useCase.Setup(r => r.Update(
+            It.IsAny<Guid>(),
+            It.IsAny<string>(),
+            It.IsAny<string>(),
+            It.IsAny<string>(),
+            It.IsAny<string>())
+        ).ReturnsAsync((User?)null);
+
+        // Act
+        var actual = await _controller.Update(id, requestBody);
+
+        // Assert
+        actual.Should().BeOfType<NotFoundResult>();
+    }
+
+    [Fact]
+    public async Task Update_Return_BadData_When_EmailAlreadyExist()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
+        var requestBody = new UserBody("name", "some@mail.com", "0987654321", "some address");
+        _useCase.Setup(r => r.Update(
+            It.IsAny<Guid>(),
+            It.IsAny<string>(),
+            It.IsAny<string>(),
+            It.IsAny<string>(),
+            It.IsAny<string>())
+        ).Throws<EmailAlreadyExist>();
+
+        // Act
+        var actual = await _controller.Update(id, requestBody);
+
+        // Assert
+        actual.Should().BeOfType<BadRequestResult>();
+    }
+
+    [Fact]
+    public async Task Update_Return_UserDto()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
+        var requestBody = new UserBody("name", "some@mail.com", "0987654321", "some address");
+        var user = _factory.NewUser("name", "some@mail.com", "0987654321", "some address");
+        _useCase.Setup(r => r.Update(
+            It.IsAny<Guid>(),
+            It.IsAny<string>(),
+            It.IsAny<string>(),
+            It.IsAny<string>(),
+            It.IsAny<string>())
+        ).ReturnsAsync(user);
+
+        // Act
+        var actual = (OkObjectResult) await _controller.Update(id, requestBody);
 
         // Assert
         actual.Value.Should().BeOfType<UserDto>();

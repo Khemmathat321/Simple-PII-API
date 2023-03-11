@@ -53,9 +53,16 @@ public class UserController : Controller
     [HttpPut("{id:guid}")]
     public async Task<IActionResult> Update(Guid id, [FromBody] UserBody userBody)
     {
-        var userUpdated = await _userCrudUseCase.Update(id, userBody.Name, userBody.Email, userBody.PhoneNumber, userBody.Address);
-        if (userUpdated == null) return await Task.FromResult<IActionResult>(NotFound());
+        try
+        {
+            var userUpdated = await _userCrudUseCase.Update(id, userBody.Name, userBody.Email, userBody.PhoneNumber, userBody.Address);
+            if (userUpdated == null) return await Task.FromResult<IActionResult>(NotFound());
 
-        return await Task.FromResult<IActionResult>(Ok(new UserDto(userUpdated)));
+            return await Task.FromResult<IActionResult>(Ok(new UserDto(userUpdated)));
+        }
+        catch (EmailAlreadyExist e)
+        {
+            return await Task.FromResult<IActionResult>(BadRequest());
+        }
     }
 }
