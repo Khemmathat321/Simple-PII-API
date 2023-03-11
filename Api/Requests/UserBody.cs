@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Api.Requests;
 
-public class UserCreateBody
+public class UserBody
 {
     [Required]
     public string Name { get; set; }
@@ -10,7 +10,11 @@ public class UserCreateBody
     [Required]
     [EmailAddress]
     public string Email { get; set; }
+
+    [Required]
     [Phone]
     public string? PhoneNumber { get; set; }
+
+    [Required]
     public string? Address { get; set; }
 }
