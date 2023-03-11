@@ -1,5 +1,6 @@
 using Api.Requests;
 using Api.ResponseDto;
+using Application.Exceptions;
 using Application.UseCases.UserCrud;
 using Microsoft.AspNetCore.Mvc;
 
@@ -35,9 +36,15 @@ public class UserController : Controller
     [HttpPost("")]
     public async Task<IActionResult> Create([FromBody] UserBody userBody)
     {
-        var userCreated = await _userCrudUseCase.Create(userBody.Name, userBody.Email, userBody.PhoneNumber, userBody.Address);
-
-        return await Task.FromResult<IActionResult>(Ok(new UserDto(userCreated)));
+        try
+        {
+            var userCreated = await _userCrudUseCase.Create(userBody.Name, userBody.Email, userBody.PhoneNumber, userBody.Address);
+            return await Task.FromResult<IActionResult>(Ok(new UserDto(userCreated)));
+        }
+        catch (EmailAlreadyExist e)
+        {
+            return await Task.FromResult<IActionResult>(BadRequest());
+        }
     }
 
     /// <summary>

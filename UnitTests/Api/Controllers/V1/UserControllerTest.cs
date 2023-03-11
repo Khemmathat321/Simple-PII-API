@@ -1,7 +1,9 @@
 using System;
 using System.Threading.Tasks;
 using Api.Controllers.V1;
+using Api.Requests;
 using Api.ResponseDto;
+using Application.Exceptions;
 using Application.UseCases.UserCrud;
 using Domain.Entities;
 using FluentAssertions;
@@ -64,6 +66,66 @@ public class UserControllerTest
 
         // Act
         var actual = (OkObjectResult) await _controller.Get(id);
+
+        // Assert
+        actual.Value.Should().BeOfType<UserDto>();
+    }
+
+    [Fact]
+    public async Task CreateUser_Return_BadData_When_EmailAlreadyExist()
+    {
+        // Arrange
+        var requestBody = new UserBody("name", "some@mail.com", "0987654321", "some address");
+        var user = _factory.NewUser("name", "some@mail.com", "0987654321", "some address");
+        _useCase.Setup(r => r.Create(
+            It.IsAny<string>(),
+            It.IsAny<string>(),
+            It.IsAny<string>(),
+            It.IsAny<string>())
+        ).Throws<EmailAlreadyExist>();
+
+        // Act
+        var actual = await _controller.Create(requestBody);
+
+        // Assert
+        actual.Should().BeOfType<BadRequestResult>();
+    }
+
+    [Fact]
+    public async Task CreateUser_Return_Ok()
+    {
+        // Arrange
+        var requestBody = new UserBody("name", "some@mail.com", "0987654321", "some address");
+        var user = _factory.NewUser("name", "some@mail.com", "0987654321", "some address");
+        _useCase.Setup(r => r.Create(
+            It.IsAny<string>(),
+            It.IsAny<string>(),
+            It.IsAny<string>(),
+            It.IsAny<string>())
+        ).ReturnsAsync(user);
+
+        // Act
+        var actual = await _controller.Create(requestBody);
+
+        // Assert
+        actual.Should().BeOfType<OkObjectResult>();
+    }
+
+    [Fact]
+    public async Task CreateUser_Return_UserDto()
+    {
+        // Arrange
+        var requestBody = new UserBody("name", "some@mail.com", "0987654321", "some address");
+        var user = _factory.NewUser("name", "some@mail.com", "0987654321", "some address");
+        _useCase.Setup(r => r.Create(
+            It.IsAny<string>(),
+            It.IsAny<string>(),
+            It.IsAny<string>(),
+            It.IsAny<string>())
+        ).ReturnsAsync(user);
+
+        // Act
+        var actual = (OkObjectResult) await _controller.Create(requestBody);
 
         // Assert
         actual.Value.Should().BeOfType<UserDto>();

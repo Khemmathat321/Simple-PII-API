@@ -4,6 +4,14 @@ namespace Api.Requests;
 
 public class UserBody
 {
+    public UserBody(string name, string email, string? phoneNumber, string? address)
+    {
+        Name = name;
+        Email = email;
+        PhoneNumber = phoneNumber;
+        Address = address;
+    }
+
     [Required]
     public string Name { get; set; }
 
