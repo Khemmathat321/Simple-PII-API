@@ -21,9 +21,16 @@ public class UserRepository : IUserRepository
         return result.Entity;
     }
 
-    public Task Update()
+    public async Task<User> Update(User user)
     {
-        throw new NotImplementedException();
+        var record = await _context.User.Where(q => q.Id == user.Id).Select(q => q).SingleOrDefaultAsync();
+        record.Email = user.Email;
+        record.Name = user.Name;
+        record.PhoneNumber = user.PhoneNumber;
+        record.Address = user.Address;
+
+        await _context.SaveChangesAsync();
+        return record;
     }
 
     public Task<IEnumerable<User>> GetUsers()
@@ -33,7 +40,7 @@ public class UserRepository : IUserRepository
 
     public async Task<User> GetUser(Guid id)
     {
-        var user = await _context.User.Where(q => q.Id == id).Select(q => q).SingleOrDefaultAsync().ConfigureAwait(false);
+        var user = await _context.User.Where(q => q.Id == id).Select(q => q).SingleOrDefaultAsync();
 
         return user;
     }

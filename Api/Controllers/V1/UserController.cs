@@ -45,10 +45,11 @@ public class UserController : Controller
     ///    Endpoint for update user
     /// </summary>
     [HttpPut("{id:guid}")]
-    public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UserUpdateBody userUpdateBody)
+    public async Task<IActionResult> Update(Guid id, [FromBody] UserUpdateBody userUpdateBody)
     {
         var user = new User(id, userUpdateBody.Name, new MailAddress(userUpdateBody.Email), userUpdateBody.PhoneNumber, userUpdateBody.Address);
-        var userUpdated = await _userRepository.Create(user);
+
+        var userUpdated = await _userRepository.Update(user);
 
         return await Task.FromResult<IActionResult>(Ok(new UserDto(userUpdated)));
     }
