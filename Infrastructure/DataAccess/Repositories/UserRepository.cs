@@ -1,3 +1,4 @@
+using System.Net.Mail;
 using Domain;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +24,7 @@ public class UserRepository : IUserRepository
 
     public async Task<User> Update(User user)
     {
-        var record = await _context.User.Where(q => q.Id == user.Id).Select(q => q).SingleOrDefaultAsync();
+        var record = await _context.User.Where(q => q.Id == user.Id).Select(q => q).SingleAsync();
         record.Email = user.Email;
         record.Name = user.Name;
         record.PhoneNumber = user.PhoneNumber;
@@ -38,10 +39,13 @@ public class UserRepository : IUserRepository
         throw new NotImplementedException();
     }
 
+    public async Task<IEnumerable<User>> GetUsers(MailAddress mailAddress)
+    {
+        return await _context.User.Where(q => q.Email == mailAddress).Select(q => q).ToListAsync();
+    }
+
     public async Task<User> GetUser(Guid id)
     {
-        var user = await _context.User.Where(q => q.Id == id).Select(q => q).SingleOrDefaultAsync();
-
-        return user;
+        return await _context.User.Where(q => q.Id == id).Select(q => q).SingleAsync();
     }
 }

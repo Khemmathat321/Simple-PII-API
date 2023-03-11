@@ -1,5 +1,7 @@
+using Application.UseCases.UserCrud;
 using Domain;
 using Infrastructure.DataAccess;
+using Infrastructure.DataAccess.Factories;
 using Infrastructure.DataAccess.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,6 +20,8 @@ builder.Services.AddDbContext<UserDbContext>(
         .EnableDetailedErrors()
 );
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserFactory, UserFactory>();
+builder.Services.AddScoped<IUserCrudUseCase, UserCrudUseCase>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
