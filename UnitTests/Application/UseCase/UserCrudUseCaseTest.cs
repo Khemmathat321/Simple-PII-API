@@ -1,6 +1,7 @@
 using System;
 using System.Net.Mail;
 using System.Threading.Tasks;
+using Application.Exceptions;
 using Application.UseCases.UserCrud;
 using Domain;
 using Domain.Entities;
@@ -53,7 +54,7 @@ public class UserCrudUseCaseTest
         var exception= await Record.ExceptionAsync(async () => await _userCrudUseCase.Create(name, email, number, address));
 
         // Assert
-        exception.Should().NotBeNull();
+        exception.Should().BeOfType<EmailAlreadyExistException>();
     }
 
     [Theory]
@@ -117,7 +118,7 @@ public class UserCrudUseCaseTest
         var exception= await Record.ExceptionAsync(async () => await _userCrudUseCase.Update(id, name, email, number, address));
 
         // Assert
-        exception.Should().NotBeNull();
+        exception.Should().BeOfType<EmailAlreadyExistException>();
     }
 
     [Theory]

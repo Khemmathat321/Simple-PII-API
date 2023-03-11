@@ -82,7 +82,7 @@ public class UserControllerTest
             It.IsAny<string>(),
             It.IsAny<string>(),
             It.IsAny<string>())
-        ).Throws<EmailAlreadyExist>();
+        ).Throws<EmailAlreadyExistException>();
 
         // Act
         var actual = await _controller.Create(requestBody);
@@ -187,7 +187,7 @@ public class UserControllerTest
             It.IsAny<string>(),
             It.IsAny<string>(),
             It.IsAny<string>())
-        ).Throws<EmailAlreadyExist>();
+        ).Throws<EmailAlreadyExistException>();
 
         // Act
         var actual = await _controller.Update(id, requestBody);
