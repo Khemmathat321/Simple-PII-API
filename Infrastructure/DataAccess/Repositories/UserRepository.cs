@@ -24,7 +24,7 @@ public class UserRepository : IUserRepository
 
     public async Task<User?> Update(User user)
     {
-        var record = await _context.User.Where(q => q.Id == user.Id).Select(q => q).SingleOrDefaultAsync();
+        var record = await _context.User.Where(q => q.Id == user.Id).SingleOrDefaultAsync();
         if (record == null) return null;
 
         record.Email = user.Email;
@@ -43,11 +43,11 @@ public class UserRepository : IUserRepository
 
     public async Task<IEnumerable<User>> GetUsers(MailAddress mailAddress)
     {
-        return await _context.User.Where(q => q.Email == mailAddress).Select(q => q).ToListAsync();
+        return await _context.User.Where(q => q.Email == mailAddress).ToListAsync();
     }
 
     public async Task<User?> GetUser(Guid id)
     {
-        return await _context.User.Where(q => q.Id == id).Select(q => q).SingleOrDefaultAsync();
+        return await _context.User.Where(q => q.Id == id).SingleOrDefaultAsync();
     }
 }
