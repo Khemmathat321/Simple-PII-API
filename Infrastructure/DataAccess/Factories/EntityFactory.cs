@@ -4,7 +4,7 @@ using Domain.Entities;
 
 namespace Infrastructure.DataAccess.Factories;
 
-public class UserFactory : IUserFactory
+public class EntityFactory : IEntityFactory
 {
     public User NewUser(string name, string email, string? phoneNumber, string? address)
     {

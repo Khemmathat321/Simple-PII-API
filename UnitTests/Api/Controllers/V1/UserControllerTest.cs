@@ -18,13 +18,13 @@ public class UserControllerTest
 {
     private readonly Mock<IUserCrudUseCase> _useCase;
     private readonly UserController _controller;
-    private readonly UserFactory _factory;
+    private readonly EntityFactory _factory;
 
     public UserControllerTest()
     {
         _useCase = new Mock<IUserCrudUseCase>();
         _controller = new UserController(_useCase.Object);
-        _factory = new UserFactory();
+        _factory = new EntityFactory();
     }
 
     [Fact]

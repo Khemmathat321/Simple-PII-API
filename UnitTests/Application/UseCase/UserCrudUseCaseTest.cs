@@ -15,13 +15,13 @@ namespace UnitTests.Application.UseCase;
 public class UserCrudUseCaseTest
 {
     private readonly UserCrudUseCase _userCrudUseCase;
-    private readonly UserFactory _factory;
+    private readonly EntityFactory _factory;
     private readonly Mock<IUserRepository> _repo;
 
     public UserCrudUseCaseTest()
     {
         _repo = new Mock<IUserRepository>();
-        _factory = new UserFactory();
+        _factory = new EntityFactory();
         _userCrudUseCase = new UserCrudUseCase(_repo.Object, _factory);
     }
 

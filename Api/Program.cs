@@ -19,7 +19,7 @@ builder.Services.AddDbContext<UserDbContext>(
         .EnableDetailedErrors()
 );
 builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IUserFactory, UserFactory>();
+builder.Services.AddScoped<IEntityFactory, EntityFactory>();
 builder.Services.AddScoped<IUserCrudUseCase, UserCrudUseCase>();
 
 builder.Services.AddControllers();
