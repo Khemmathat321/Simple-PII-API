@@ -1,7 +1,9 @@
+using System.Net;
 using Api.Requests;
 using Api.ResponseDto;
 using Application.Exceptions;
 using Application.UseCases.UserCrud;
+using Infrastructure.DataAccess.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers.V1;
@@ -41,9 +43,13 @@ public class UserController : Controller
             var userCreated = await _userCrudUseCase.Create(userBody.Name, userBody.Email, userBody.PhoneNumber, userBody.Address);
             return await Task.FromResult<IActionResult>(Ok(new UserDto(userCreated)));
         }
-        catch (EmailAlreadyExistException e)
+        catch (Exception e)
         {
-            return await Task.FromResult<IActionResult>(BadRequest(new {e.Message}));
+            if (e is EmailAlreadyExistException or SqlActionException)
+            {
+                return await Task.FromResult<IActionResult>(BadRequest(new {e.Message}));
+            }
+            return await Task.FromResult<IActionResult>(StatusCode((int)HttpStatusCode.InternalServerError));
         }
     }
 
@@ -56,13 +62,16 @@ public class UserController : Controller
         try
         {
             var userUpdated = await _userCrudUseCase.Update(id, userBody.Name, userBody.Email, userBody.PhoneNumber, userBody.Address);
-            if (userUpdated == null) return await Task.FromResult<IActionResult>(NotFound());
 
             return await Task.FromResult<IActionResult>(Ok(new UserDto(userUpdated)));
         }
-        catch (EmailAlreadyExistException e)
+        catch (Exception e)
         {
-            return await Task.FromResult<IActionResult>(BadRequest(new {e.Message}));
+            if (e is EmailAlreadyExistException or SqlActionException)
+            {
+                return await Task.FromResult<IActionResult>(BadRequest(new {e.Message}));
+            }
+            return await Task.FromResult<IActionResult>(StatusCode((int)HttpStatusCode.InternalServerError));
         }
     }
 }

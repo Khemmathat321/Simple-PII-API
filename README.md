@@ -22,9 +22,6 @@ docker-compose up api
 Browse to http://localhost:8888/swagger/index.html.
 
 ---
-## Left out
-* Use SQL query, but I designed to do with create a new repository that query with raw SQL
-
 ## Trade offs
 * Infrastructure does not have Model and it used from Domain project so it need configuration to map Entity fields to database column
 * Separate logic into projects it make we can do unit test on each logic
@@ -39,6 +36,7 @@ Browse to http://localhost:8888/swagger/index.html.
 ## Will do in the future
 * Add logger
 * Add authentication and authorization
+* Improve how to handle Repository and UseCase exceptions
 * Validation phone number on UserEntity
 * Add exception middleware for handle error response
 * Add domain event
