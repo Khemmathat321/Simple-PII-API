@@ -45,5 +45,4 @@ Browse to http://localhost:8888/swagger/index.html.
 * Change id to value object
 * Add integration test for Infrastructure project
 * Improve update endpoint to support Under-Posting
-* Github action for run unit test
 * Improve docker migration
