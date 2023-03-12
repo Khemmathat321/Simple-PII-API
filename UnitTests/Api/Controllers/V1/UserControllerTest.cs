@@ -7,6 +7,7 @@ using Application.Exceptions;
 using Application.UseCases.UserCrud;
 using Domain.Entities;
 using FluentAssertions;
+using Infrastructure.DataAccess.Exceptions;
 using Infrastructure.DataAccess.Factories;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -89,6 +90,46 @@ public class UserControllerTest
 
         // Assert
         actual.Should().BeOfType<BadRequestObjectResult>();
+    }
+
+    [Fact]
+    public async Task Create_Return_BadData_When_CreateFailed()
+    {
+        // Arrange
+        var requestBody = new UserBody("name", "some@mail.com", "0987654321", "some address");
+        var user = _factory.NewUser("name", "some@mail.com", "0987654321", "some address");
+        _useCase.Setup(r => r.Create(
+            It.IsAny<string>(),
+            It.IsAny<string>(),
+            It.IsAny<string>(),
+            It.IsAny<string>())
+        ).Throws(new SqlActionException("some", "entity"));
+
+        // Act
+        var actual = await _controller.Create(requestBody);
+
+        // Assert
+        actual.Should().BeOfType<BadRequestObjectResult>();
+    }
+
+    [Fact]
+    public async Task Create_Return_StatusCode_When_InternalError()
+    {
+        // Arrange
+        var requestBody = new UserBody("name", "some@mail.com", "0987654321", "some address");
+        var user = _factory.NewUser("name", "some@mail.com", "0987654321", "some address");
+        _useCase.Setup(r => r.Create(
+            It.IsAny<string>(),
+            It.IsAny<string>(),
+            It.IsAny<string>(),
+            It.IsAny<string>())
+        ).Throws<Exception>();
+
+        // Act
+        var actual = await _controller.Create(requestBody);
+
+        // Assert
+        actual.Should().BeOfType<StatusCodeResult>();
     }
 
     [Fact]
@@ -194,6 +235,48 @@ public class UserControllerTest
 
         // Assert
         actual.Should().BeOfType<BadRequestObjectResult>();
+    }
+
+    [Fact]
+    public async Task Update_Return_BadData_When_UpdateFailed()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
+        var requestBody = new UserBody("name", "some@mail.com", "0987654321", "some address");
+        _useCase.Setup(r => r.Update(
+            It.IsAny<Guid>(),
+            It.IsAny<string>(),
+            It.IsAny<string>(),
+            It.IsAny<string>(),
+            It.IsAny<string>())
+        ).Throws(new SqlActionException("some", "entity"));
+
+        // Act
+        var actual = await _controller.Update(id, requestBody);
+
+        // Assert
+        actual.Should().BeOfType<BadRequestObjectResult>();
+    }
+
+    [Fact]
+    public async Task Update_Return_StatusCode_When_Servererror()
+    {
+        // Arrange
+        var id = Guid.NewGuid();
+        var requestBody = new UserBody("name", "some@mail.com", "0987654321", "some address");
+        _useCase.Setup(r => r.Update(
+            It.IsAny<Guid>(),
+            It.IsAny<string>(),
+            It.IsAny<string>(),
+            It.IsAny<string>(),
+            It.IsAny<string>())
+        ).Throws<Exception>();
+
+        // Act
+        var actual = await _controller.Update(id, requestBody);
+
+        // Assert
+        actual.Should().BeOfType<StatusCodeResult>();
     }
 
     [Fact]
