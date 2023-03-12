@@ -88,7 +88,7 @@ public class UserControllerTest
         var actual = await _controller.Create(requestBody);
 
         // Assert
-        actual.Should().BeOfType<BadRequestResult>();
+        actual.Should().BeOfType<BadRequestObjectResult>();
     }
 
     [Fact]
@@ -193,7 +193,7 @@ public class UserControllerTest
         var actual = await _controller.Update(id, requestBody);
 
         // Assert
-        actual.Should().BeOfType<BadRequestResult>();
+        actual.Should().BeOfType<BadRequestObjectResult>();
     }
 
     [Fact]
