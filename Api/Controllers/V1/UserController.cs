@@ -41,9 +41,9 @@ public class UserController : Controller
             var userCreated = await _userCrudUseCase.Create(userBody.Name, userBody.Email, userBody.PhoneNumber, userBody.Address);
             return await Task.FromResult<IActionResult>(Ok(new UserDto(userCreated)));
         }
-        catch (EmailAlreadyExistException)
+        catch (EmailAlreadyExistException e)
         {
-            return await Task.FromResult<IActionResult>(BadRequest());
+            return await Task.FromResult<IActionResult>(BadRequest(new {e.Message}));
         }
     }
 
@@ -60,9 +60,9 @@ public class UserController : Controller
 
             return await Task.FromResult<IActionResult>(Ok(new UserDto(userUpdated)));
         }
-        catch (EmailAlreadyExistException)
+        catch (EmailAlreadyExistException e)
         {
-            return await Task.FromResult<IActionResult>(BadRequest());
+            return await Task.FromResult<IActionResult>(BadRequest(new {e.Message}));
         }
     }
 }
