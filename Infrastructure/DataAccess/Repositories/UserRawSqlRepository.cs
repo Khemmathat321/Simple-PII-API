@@ -28,7 +28,7 @@ public class UserRawSqlRepository : IUserRepository
         return user;
     }
 
-    public async Task<User?> Update(User user)
+    public async Task<User> Update(User user)
     {
         FormattableString sql = @$"
             UPDATE users t

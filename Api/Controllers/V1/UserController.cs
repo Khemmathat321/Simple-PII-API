@@ -62,7 +62,6 @@ public class UserController : Controller
         try
         {
             var userUpdated = await _userCrudUseCase.Update(id, userBody.Name, userBody.Email, userBody.PhoneNumber, userBody.Address);
-            if (userUpdated == null) return await Task.FromResult<IActionResult>(NotFound());
 
             return await Task.FromResult<IActionResult>(Ok(new UserDto(userUpdated)));
         }

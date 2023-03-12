@@ -1,6 +1,7 @@
 using System.Net.Mail;
 using Domain;
 using Domain.Entities;
+using Infrastructure.DataAccess.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.DataAccess.Repositories;
@@ -22,10 +23,10 @@ public class UserRepository : IUserRepository
         return result.Entity;
     }
 
-    public async Task<User?> Update(User user)
+    public async Task<User> Update(User user)
     {
         var record = await _context.User.Where(q => q.Id == user.Id).SingleOrDefaultAsync();
-        if (record == null) return null;
+        if (record == null) throw new SqlActionException("update", "user");
 
         record.Email = user.Email;
         record.Name = user.Name;
