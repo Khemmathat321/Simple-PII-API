@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace Api.Requests;
@@ -21,6 +22,7 @@ public class UserBody
 
     [Required]
     [Phone]
+    [DefaultValue("0987654321")]
     public string? PhoneNumber { get; set; }
 
     [Required]
